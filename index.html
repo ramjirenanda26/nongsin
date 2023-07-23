@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dinongsin aja:)</title>
+  <link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400" rel="stylesheet">
+  <link rel="shortcut icon" type="image/png" href="img/favicon.png">
+  <link rel="stylesheet" href="style/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+  <!-- Leaflet.markercluster CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.0/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.0/dist/MarkerCluster.Default.css">
+  <!-- Leaflet buffer css-->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.buffer@2.0.0/leaflet.buffer.css">
+</head>
+
+<body>
+  <div id="map"></div>
+  <div class="leaflet-top leaflet-right">
+    <div class="leaflet-control">
+      <button id="toggleTableBtn">Collapse/Expand Table</button>
+    </div>
+  </div>
+  <div class="table-container">
+    <div class="table-header">
+      <h1>Cafe Information</h1>
+    </div>
+    <div class="table-scroll">
+      <table id="cafeTable">
+        <!-- Tabel cafe akan ditambahkan di sini menggunakan JavaScript -->
+        <thead>
+          <tr>
+            <th>Nama Cafe</th>
+            <th>Skor</th>
+            <th>Jumlah Review</th>
+            <th>Website</th>
+            <th>Maps</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.buffer@2.0.0/leaflet.buffer.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.0/dist/leaflet.markercluster.js"></script>
+  <!-- Leaflet Proj4Leaflet -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+  <script src="script/map.js"></script>
+</body>
+
+</html>

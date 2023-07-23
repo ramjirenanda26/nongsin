@@ -1,0 +1,66 @@
+#map {
+  height: calc(100vh - 40px);
+  width: 100vw;
+  position: relative;
+}
+
+/* CSS that you already have remains unchanged */
+
+.leaflet-control {
+  margin: 10px;
+}
+
+    #toggleTableBtn {
+      padding: 8px 16px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .table-container {
+      display: none;
+      position: absolute;
+      top: 80px;
+      right: 20px;
+      width: 300px;
+      height: 300px;
+      background-color: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      z-index: 1000; /* Place the table above the map */
+      overflow: hidden;
+      overflow-x: auto;
+    }
+
+    .table-header {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 8px;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .table-scroll {
+      overflow-y: auto;
+      overflow-x: auto;
+      max-height: 250px;
+    }
+
+    #cafeTable {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    #cafeTable th,
+    #cafeTable td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd; /* Menambahkan garis bawah pada sel */
+    }
+
+    /* Custom styles for better UI, you can modify these styles as per your preference */
+    h1 {
+      margin: 0;
+    }
+
