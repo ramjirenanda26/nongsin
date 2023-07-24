@@ -6,7 +6,6 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
   maxZoom: 19,
   attribution: '&copy; <a href="https://carto.com/attributions">CartoDB</a>'
 }).addTo(map);
-
 // Menambahkan layer untuk data cafe.geojson
 var cafeLayer = L.geoJSON();
 
@@ -47,13 +46,6 @@ fetch('data/cafe.geojson')
     // Mengatur peta agar langsung difokuskan ke layer cafeLayer
     map.fitBounds(cafeLayer.getBounds()); // SetView otomatis disetel berdasarkan cafeLayer
 
-    // Tambahkan event listener setelah data cafe.geojson selesai dimuat
-    var cafeRows = document.querySelectorAll('#cafeTable tbody tr');
-    cafeRows.forEach(function (row, index) {
-      row.addEventListener('click', function () {
-        zoomToFeatureOnMap(index);
-      });
-    });
   })
   .catch(error => {
     console.error('Error loading cafe.geojson:', error);
@@ -139,137 +131,48 @@ fetch('data/uni_point.geojson')
     console.error('Error loading uni_point.geojson:', error);
   });
 
-// ... Kode sebelumnya ...
+// Muat data cafe.geojson menggunakan AJAX
+fetch('data/cafe.geojson')
+  .then(response => response.json())
+  .then(data => {
+    // Urutkan data berdasarkan jumlah review (reviewsCou) secara descending
+    data.features.sort((a, b) => b.properties.reviewsCou - a.properties.reviewsCou);
 
-// Deklarasi variabel untuk menyimpan status visibility tabel
-var isTableVisible = false;
+    // Membuat tabel berisi informasi dari cafe.geojson
+    var cafeTableBody = document.querySelector('#cafeTable tbody');
 
-// Fungsi untuk menyaring data berdasarkan nama cafe
-var searchInput = document.getElementById('searchCafeInput');
-searchInput.addEventListener('input', function () {
-  filterCafeTable(this.value.trim());
-});
-
-function filterCafeTable(keyword) {
-  var cafeRows = document.querySelectorAll('#cafeTable tbody tr');
-  keyword = keyword.toLowerCase();
-
-  cafeRows.forEach(function (row) {
-    var cafeName = row.querySelector('td:first-child').textContent.toLowerCase();
-    if (cafeName.includes(keyword)) {
-      row.style.display = 'table-row';
-    } else {
-      row.style.display = 'none';
-    }
-  });
-}
-
-// Fungsi untuk menyaring fitur berdasarkan extent peta
-function filterFeaturesByExtent() {
-  var visibleFeatures = [];
-
-  // Dapatkan extent peta saat ini
-  var mapBounds = map.getBounds();
-
-  // Saring fitur dari layer cafeLayer yang berada dalam extent peta saat ini
-  cafeLayer.eachLayer(function (layer) {
-    var latLng = layer.getLatLng();
-    if (mapBounds.contains(latLng)) {
-      visibleFeatures.push(layer);
-    }
-  });
-
-  return visibleFeatures;
-}
-
-// Tampilkan fitur berdasarkan extent peta saat ini
-function updateTable() {
-  var cafeTableBody = document.querySelector('#cafeTable tbody');
-  cafeTableBody.innerHTML = ''; // Bersihkan tabel sebelum mengisi kembali
-
-  var visibleFeatures = filterFeaturesByExtent();
-
-  // Urutkan data berdasarkan jumlah review (reviewsCou) secara descending
-  visibleFeatures.sort((a, b) => b.feature.properties.reviewsCou - a.feature.properties.reviewsCou);
-
-  visibleFeatures.forEach(function (layer) {
-    var cafeInfo = layer.feature.properties;
-    var row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${cafeInfo.title}</td>
-      <td>${cafeInfo.totalScore}</td>
-      <td>${cafeInfo.reviewsCou}</td>
-      <td>${cafeInfo.website ? `<a href="${cafeInfo.website}" target="_blank">Visit Website</a>` : '-'}</td>
-      <td>${cafeInfo.url ? `<a href="${cafeInfo.url}" target="_blank">Go to maps</a>` : '-'}</td>
-    `;
-    cafeTableBody.appendChild(row);
-
-    row.addEventListener('click', function () {
-      zoomToFeatureOnMap(cafeInfo.title);
+    data.features.forEach(function (feature) {
+      var cafeInfo = feature.properties;
+      var row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${cafeInfo.title}</td>
+        <td>${cafeInfo.totalScore}</td>
+        <td>${cafeInfo.reviewsCou}</td>
+        <td>${cafeInfo.website ? `<a href="${cafeInfo.website}" target="_blank">Visit Website</a>` : '-'}</td>
+        <td>${cafeInfo.url ? `<a href="${cafeInfo.url}" target="_blank">Go to maps</a>` : '-'}</td>
+      `;
+      cafeTableBody.appendChild(row);
     });
-
-    // Menambahkan event listener untuk efek hover pada baris tabel
-    row.addEventListener('mouseenter', function () {
-      layer.setStyle({
-        fillOpacity: 0.3, // Warna berubah saat kursor berada di atas baris tabel
-      });
-    });
-
-    row.addEventListener('mouseleave', function () {
-      layer.setStyle({
-        fillOpacity: 0, // Mengembalikan ke hollow saat kursor keluar dari baris tabel
-      });
-    });
-  });
-}
-
-// Panggil fungsi updateTable saat peta bergerak atau memuat ulang
-map.on('moveend', function () {
-  updateTable();
-});
-
-// Fungsi untuk menampilkan fitur pada peta berdasarkan nama cafe
-function zoomToFeatureOnMap(cafeName) {
-  var targetLayer = null;
-
-  // Cari fitur (titik cafe) dengan nama yang sesuai di layer cafeLayer
-  cafeLayer.eachLayer(function (layer) {
-    if (layer.feature.properties.title === cafeName) {
-      targetLayer = layer;
-      return;
-    }
+  })
+  .catch(error => {
+    console.error('Error loading cafe.geojson:', error);
   });
 
-  // Jika fitur ditemukan, arahkan peta ke fitur tersebut
-  if (targetLayer) {
-    map.setView(targetLayer.getLatLng(), 18); // 18 adalah level zoom yang sesuai, sesuaikan sesuai kebutuhan
-    targetLayer.openPopup(); // Buka popup informasi pada fitur yang dipilih
-  }
-}
 
-// Tambahkan event listener pada tombol "X" untuk keluar dari tabel
-var closeTableBtn = document.getElementById('closeTableBtn');
-closeTableBtn.addEventListener('click', function () {
-  var tableContainer = document.querySelector('.table-container');
-  tableContainer.style.display = 'none';
-  tableContainer.classList.remove('expanded');
-  toggleTableVisibilityBtn.textContent = 'Show Table';
-  isTableVisible = false;
-});
+var tableContainer = document.querySelector('.table-container');
+var toggleTableBtn = document.getElementById('toggleTableBtn');
+var isTableExpanded = false;
 
-// Tambahkan event listener untuk toggle visibility tabel
-var toggleTableVisibilityBtn = document.getElementById('toggleTableVisibilityBtn');
-toggleTableVisibilityBtn.addEventListener('click', function () {
-  var tableContainer = document.querySelector('.table-container');
-  if (!isTableVisible) {
+toggleTableBtn.addEventListener('click', function () {
+  if (!isTableExpanded) {
     tableContainer.style.display = 'block';
     tableContainer.classList.add('expanded');
-    toggleTableVisibilityBtn.textContent = 'Hide Table';
-    isTableVisible = true;
+    toggleTableBtn.textContent = 'Collapse Table';
+    isTableExpanded = true;
   } else {
     tableContainer.style.display = 'none';
     tableContainer.classList.remove('expanded');
-    toggleTableVisibilityBtn.textContent = 'Show Table';
-    isTableVisible = false;
+    toggleTableBtn.textContent = 'Expand Table';
+    isTableExpanded = false;
   }
 });
