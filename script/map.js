@@ -42,20 +42,6 @@ fetch('data/cafe.geojson')
       }
 
       layer.bindPopup(popupContent);
-
-      // Menambahkan event listener untuk efek hover pada peta ketika baris tabel di-hover
-      layer.on({
-        mouseover: function () {
-          layer.setStyle({
-            fillOpacity: 0.3, // Warna berubah saat kursor bergerak melewati
-          });
-        },
-        mouseout: function () {
-          layer.setStyle({
-            fillOpacity: 0, // Mengembalikan ke hollow saat kursor keluar
-          });
-        }
-      });
     });
 
     // Mengatur peta agar langsung difokuskan ke layer cafeLayer
