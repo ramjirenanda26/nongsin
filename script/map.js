@@ -7,14 +7,14 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://carto.com/attributions">CartoDB</a>'
 }).addTo(map);
 
-// Menambahkan layer untuk data cafe.geojson
+// Menambahkan layer untuk data cafe_v2.geojson
 var cafeLayer = L.geoJSON();
 
-// Memuat data cafe.geojson menggunakan AJAX
-fetch('data/cafe.geojson')
+// Memuat data cafe_v2.geojson menggunakan AJAX
+fetch('data/cafe_v2.geojson')
   .then(response => response.json())
   .then(data => {
-    // Menambahkan data cafe.geojson ke layer cafeLayer
+    // Menambahkan data cafe_v2.geojson ke layer cafeLayer
     cafeLayer.addData(data);
 
     // Mengatur clustering pada layer cafeLayer menggunakan Leaflet.markercluster
@@ -31,7 +31,7 @@ fetch('data/cafe.geojson')
     cafeLayer.eachLayer(function (layer) {
       var popupContent = '<b>Nama Cafe:</b> ' + layer.feature.properties.title + '<br>' +
         '<b>Skor:</b> ' + layer.feature.properties.totalScore + '<br>' +
-        '<b>Jumlah Review:</b> ' + layer.feature.properties.reviewsCou + '<br>';
+        '<b>Jumlah Review:</b> ' + layer.feature.properties.reviewsCount + '<br>';
 
       if (layer.feature.properties.website) {
         popupContent += '<b>Website:</b> <a href="' + layer.feature.properties.website + '" target="_blank">Visit Website</a><br>';
@@ -47,7 +47,7 @@ fetch('data/cafe.geojson')
     // Mengatur peta agar langsung difokuskan ke layer cafeLayer
     map.fitBounds(cafeLayer.getBounds()); // SetView otomatis disetel berdasarkan cafeLayer
 
-    // Tambahkan event listener setelah data cafe.geojson selesai dimuat
+    // Tambahkan event listener setelah data cafe_v2.geojson selesai dimuat
     var cafeRows = document.querySelectorAll('#cafeTable tbody tr');
     cafeRows.forEach(function (row, index) {
       row.addEventListener('click', function () {
@@ -56,7 +56,7 @@ fetch('data/cafe.geojson')
     });
   })
   .catch(error => {
-    console.error('Error loading cafe.geojson:', error);
+    console.error('Error loading cafe_v2.geojson:', error);
   });
 
 fetch('data/uni_buffer_2km_gcs.geojson')
@@ -189,8 +189,8 @@ function updateTable() {
 
   var visibleFeatures = filterFeaturesByExtent();
 
-  // Urutkan data berdasarkan jumlah review (reviewsCou) secara descending
-  visibleFeatures.sort((a, b) => b.feature.properties.reviewsCou - a.feature.properties.reviewsCou);
+  // Urutkan data berdasarkan jumlah review (reviewsCount) secara descending
+  visibleFeatures.sort((a, b) => b.feature.properties.reviewsCount - a.feature.properties.reviewsCount);
 
   visibleFeatures.forEach(function (layer) {
     var cafeInfo = layer.feature.properties;
@@ -198,7 +198,7 @@ function updateTable() {
     row.innerHTML = `
       <td>${cafeInfo.title}</td>
       <td>${cafeInfo.totalScore}</td>
-      <td>${cafeInfo.reviewsCou}</td>
+      <td>${cafeInfo.reviewsCount}</td>
       <td>${cafeInfo.website ? `<a href="${cafeInfo.website}" target="_blank">Visit Website</a>` : '-'}</td>
       <td>${cafeInfo.url ? `<a href="${cafeInfo.url}" target="_blank">Go to maps</a>` : '-'}</td>
     `;
