@@ -4,7 +4,7 @@ var map = L.map('map');
 // Menambahkan tile layer OpenStreetMap ke peta
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
   maxZoom: 19,
-  attribution: '&copy; <a href="https://carto.com/attributions">CartoDB</a>'
+  attribution: '&copy; <a href="https://carto.com/attributions">CartoDB</a>',
 }).addTo(map);
 
 // Menambahkan layer untuk data cafe_v2.geojson
@@ -12,14 +12,14 @@ var cafeLayer = L.geoJSON();
 
 // Memuat data cafe_v2.geojson menggunakan AJAX
 fetch('data/cafe_v2.geojson')
-  .then(response => response.json())
-  .then(data => {
+  .then((response) => response.json())
+  .then((data) => {
     // Menambahkan data cafe_v2.geojson ke layer cafeLayer
     cafeLayer.addData(data);
 
     // Mengatur clustering pada layer cafeLayer menggunakan Leaflet.markercluster
     var markers = L.markerClusterGroup({
-      zIndexOffset: 100 // Sesuaikan nilai ini sesuai dengan kebutuhan
+      zIndexOffset: 100, // Sesuaikan nilai ini sesuai dengan kebutuhan
     });
 
     markers.addLayers(cafeLayer.getLayers());
@@ -29,9 +29,7 @@ fetch('data/cafe_v2.geojson')
 
     // Mengatur pop-up informasi untuk setiap titik geojson
     cafeLayer.eachLayer(function (layer) {
-      var popupContent = '<b>Nama Cafe:</b> ' + layer.feature.properties.title + '<br>' +
-        '<b>Skor:</b> ' + layer.feature.properties.totalScore + '<br>' +
-        '<b>Jumlah Review:</b> ' + layer.feature.properties.reviewsCount + '<br>';
+      var popupContent = '<b>Nama Cafe:</b> ' + layer.feature.properties.title + '<br>' + '<b>Skor:</b> ' + layer.feature.properties.totalScore + '<br>' + '<b>Jumlah Review:</b> ' + layer.feature.properties.reviewsCount + '<br>';
 
       if (layer.feature.properties.website) {
         popupContent += '<b>Website:</b> <a href="' + layer.feature.properties.website + '" target="_blank">Visit Website</a><br>';
@@ -55,13 +53,13 @@ fetch('data/cafe_v2.geojson')
       });
     });
   })
-  .catch(error => {
+  .catch((error) => {
     console.error('Error loading cafe_v2.geojson:', error);
   });
 
 fetch('data/uni_buffer_2km_gcs.geojson')
-  .then(response => response.json())
-  .then(data => {
+  .then((response) => response.json())
+  .then((data) => {
     // Fungsi untuk mengubah warna saat kursor bergerak melewati fitur
     function highlightFeature(e) {
       var layer = e.target;
@@ -82,7 +80,7 @@ fetch('data/uni_buffer_2km_gcs.geojson')
     function onEachFeature(feature, layer) {
       layer.on({
         mouseover: highlightFeature,
-        mouseout: resetHighlight
+        mouseout: resetHighlight,
       });
     }
 
@@ -93,23 +91,23 @@ fetch('data/uni_buffer_2km_gcs.geojson')
           fillColor: 'blue', // Warna biru muda
           fillOpacity: 0.1, // Set fillOpacity 0 untuk membuat berlubang (hollow)
           color: 'blue', // Warna garis
-          weight: 2 // Ketebalan garis
+          weight: 2, // Ketebalan garis
         };
       },
-      onEachFeature: onEachFeature // Atur interaksi hover pada setiap fitur
+      onEachFeature: onEachFeature, // Atur interaksi hover pada setiap fitur
     }).addTo(map);
 
     // Perbarui batas peta berdasarkan data polygon
     map.fitBounds(bufferLayer.getBounds());
   })
-  .catch(error => {
+  .catch((error) => {
     console.error('Error loading uni_buffer_2km_gcs.geojson:', error);
   });
 
 // Muat data uni_point.geojson menggunakan AJAX
 fetch('data/uni_point.geojson')
-  .then(response => response.json())
-  .then(data => {
+  .then((response) => response.json())
+  .then((data) => {
     // Buat layer untuk data titik menggunakan simbol marker merah
     var pointLayer = L.geoJSON(data, {
       pointToLayer: function (feature, latlng) {
@@ -120,8 +118,8 @@ fetch('data/uni_point.geojson')
             iconSize: [25, 41],
             iconAnchor: [12, 41],
             popupAnchor: [1, -34],
-            shadowSize: [41, 41]
-          })
+            shadowSize: [41, 41],
+          }),
         });
       },
       onEachFeature: function (feature, layer) {
@@ -129,13 +127,13 @@ fetch('data/uni_point.geojson')
         var popupContent = '<b>Nama:</b> ' + feature.properties.Nama + '<br>';
 
         layer.bindPopup(popupContent);
-      }
+      },
     }).addTo(map);
 
     // Perbarui batas peta berdasarkan data titik
     map.fitBounds(pointLayer.getBounds());
   })
-  .catch(error => {
+  .catch((error) => {
     console.error('Error loading uni_point.geojson:', error);
   });
 

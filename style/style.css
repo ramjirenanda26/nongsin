@@ -10,6 +10,14 @@
   margin: 10px;
 }
 
+html,
+body,
+#map {
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+}
+
 #toggleTableBtn {
   padding: 8px 16px;
   background-color: #4caf50;
