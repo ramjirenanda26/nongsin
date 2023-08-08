@@ -22,6 +22,18 @@ fetch('data/cafe_v2.geojson')
       zIndexOffset: 100, // Sesuaikan nilai ini sesuai dengan kebutuhan
     });
 
+    cafeLayer.eachLayer(function (layer) {
+      var redMarker = L.AwesomeMarkers.icon({
+        icon: 'mug-hot',
+        markerColor: 'cadetblue',
+        stylePrefix: 'fa',
+        prefix: 'fa',
+      });
+
+      layer.setIcon(redMarker);
+      markers.addLayer(layer);
+    });
+
     markers.addLayers(cafeLayer.getLayers());
 
     // Menambahkan layer cafeLayer dengan clustering ke peta
