@@ -11,6 +11,7 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
 var cafeLayer = L.geoJSON();
 
 // Memuat data cafe_v2.geojson menggunakan AJAX
+// Memuat data cafe_v2.geojson menggunakan AJAX
 fetch('data/cafe_v2.geojson')
   .then((response) => response.json())
   .then((data) => {
@@ -19,7 +20,7 @@ fetch('data/cafe_v2.geojson')
 
     // Mengatur clustering pada layer cafeLayer menggunakan Leaflet.markercluster
     var markers = L.markerClusterGroup({
-      zIndexOffset: 100, // Sesuaikan nilai ini sesuai dengan kebutuhan
+      zIndexOffset: 100,
     });
 
     cafeLayer.eachLayer(function (layer) {
@@ -55,7 +56,7 @@ fetch('data/cafe_v2.geojson')
     });
 
     // Mengatur peta agar langsung difokuskan ke layer cafeLayer
-    map.fitBounds(cafeLayer.getBounds()); // SetView otomatis disetel berdasarkan cafeLayer
+    map.fitBounds(cafeLayer.getBounds());
 
     // Tambahkan event listener setelah data cafe_v2.geojson selesai dimuat
     var cafeRows = document.querySelectorAll('#cafeTable tbody tr');
@@ -64,10 +65,14 @@ fetch('data/cafe_v2.geojson')
         zoomToFeatureOnMap(index);
       });
     });
+
+    // Panggil fungsi updateTable();
+    updateTable();
   })
   .catch((error) => {
     console.error('Error loading cafe_v2.geojson:', error);
   });
+
 
 fetch('data/uni_buffer_2km_gcs.geojson')
   .then((response) => response.json())
@@ -116,11 +121,10 @@ fetch('data/uni_buffer_2km_gcs.geojson')
     console.error('Error loading uni_buffer_2km_gcs.geojson:', error);
   });
 
-// Muat data uni_point.geojson menggunakan AJAX
+// Setelah Anda memuat data GeoJSON universitas
 fetch('data/uni_point.geojson')
   .then((response) => response.json())
   .then((data) => {
-    // Buat layer untuk data titik menggunakan simbol marker merah
     var pointLayer = L.geoJSON(data, {
       pointToLayer: function (feature, latlng) {
         // Membuat marker pada setiap titik dengan ikon bawaan Leaflet berwarna merah
@@ -141,19 +145,32 @@ fetch('data/uni_point.geojson')
         layer.bindPopup(popupContent);
       },
     }).addTo(map);
+    var universityListSidebar = document.getElementById("universityListSidebar");
 
-    // Perbarui batas peta berdasarkan data titik
-    map.fitBounds(pointLayer.getBounds());
+    // Loop melalui fitur universitas dan tambahkan opsi ke dalam dropdown
+    data.features.forEach(function (feature) {
+      var universityName = feature.properties.Nama; // Sesuaikan dengan atribut yang sesuai
+      var listItem = document.createElement("li");
+      var link = document.createElement("a");
+      link.href = "#";
+      link.textContent = universityName;
+
+      link.addEventListener("click", function () {
+        // Fungsi untuk melakukan zoom pada peta ke lokasi universitas
+        zoomToUniversity(feature.geometry.coordinates);
+      });
+
+      listItem.appendChild(link);
+      universityListSidebar.appendChild(listItem);
+    });
   })
   .catch((error) => {
     console.error('Error loading uni_point.geojson:', error);
   });
 
-// ... Kode sebelumnya ...
-
-// Deklarasi variabel untuk menyimpan status visibility tabel
-var isTableVisible = false;
-
+function zoomToUniversity(coordinates) {
+  map.setView([coordinates[1], coordinates[0]], 18); // 18 adalah level zoom yang sesuai, sesuaikan sesuai kebutuhan
+}
 // Fungsi untuk menyaring data berdasarkan nama cafe
 var searchInput = document.getElementById('searchCafeInput');
 searchInput.addEventListener('input', function () {
@@ -192,7 +209,40 @@ function filterFeaturesByExtent() {
   return visibleFeatures;
 }
 
-// Tampilkan fitur berdasarkan extent peta saat ini
+// Dapatkan elemen tombol dan sidebar
+var toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
+var sidebar = document.getElementById('sidebar');
+
+// Fungsi untuk menyesuaikan posisi tombol
+function adjustToggleBtnPosition() {
+  var sidebarWidth = sidebar.offsetWidth;
+  var toggleBtnWidth = toggleSidebarBtn.offsetWidth;
+  var expandedPosition = sidebarWidth + 10; // Sesuaikan nilai ini jika diperlukan
+  var collapsedPosition = 10; // Sesuaikan nilai ini jika diperlukan
+
+  if (sidebar.classList.contains('visible')) {
+    toggleSidebarBtn.style.left = expandedPosition + 'px';
+  } else {
+    toggleSidebarBtn.style.left = collapsedPosition + 'px';
+  }
+}
+
+// Panggil fungsi untuk pertama kali dan saat jendela diubah ukurannya
+adjustToggleBtnPosition();
+window.addEventListener('resize', adjustToggleBtnPosition);
+
+// Fungsi untuk menangani klik pada tombol toggle
+toggleSidebarBtn.addEventListener('click', function () {
+  if (sidebar.classList.contains('visible')) {
+    sidebar.classList.remove('visible');
+  } else {
+    sidebar.classList.add('visible');
+  }
+
+  // Panggil kembali fungsi untuk menyesuaikan posisi tombol
+  adjustToggleBtnPosition();
+});
+
 function updateTable() {
   var cafeTableBody = document.querySelector('#cafeTable tbody');
   cafeTableBody.innerHTML = ''; // Bersihkan tabel sebelum mengisi kembali
@@ -212,11 +262,6 @@ function updateTable() {
       <td>${cafeInfo.website ? `<a href="${cafeInfo.website}" target="_blank">Visit Website</a>` : '-'}</td>
       <td>${cafeInfo.url ? `<a href="${cafeInfo.url}" target="_blank">Go to maps</a>` : '-'}</td>
     `;
-    cafeTableBody.appendChild(row);
-
-    row.addEventListener('click', function () {
-      zoomToFeatureOnMap(cafeInfo.title);
-    });
 
     // Menambahkan event listener untuk efek hover pada baris tabel
     row.addEventListener('mouseenter', function () {
@@ -230,13 +275,14 @@ function updateTable() {
         fillOpacity: 0, // Mengembalikan ke hollow saat kursor keluar dari baris tabel
       });
     });
+
+    row.addEventListener('click', function () {
+      zoomToFeatureOnMap(cafeInfo.title);
+    });
+
+    cafeTableBody.appendChild(row);
   });
 }
-
-// Panggil fungsi updateTable saat peta bergerak atau memuat ulang
-map.on('moveend', function () {
-  updateTable();
-});
 
 // Fungsi untuk menampilkan fitur pada peta berdasarkan nama cafe
 function zoomToFeatureOnMap(cafeName) {
@@ -257,29 +303,9 @@ function zoomToFeatureOnMap(cafeName) {
   }
 }
 
-// Tambahkan event listener pada tombol "X" untuk keluar dari tabel
-var closeTableBtn = document.getElementById('closeTableBtn');
-closeTableBtn.addEventListener('click', function () {
-  var tableContainer = document.querySelector('.table-container');
-  tableContainer.style.display = 'none';
-  tableContainer.classList.remove('expanded');
-  toggleTableVisibilityBtn.textContent = 'Show Table';
-  isTableVisible = false;
+// Panggil fungsi updateTable saat peta bergerak atau memuat ulang
+map.on('moveend', function () {
+  updateTable();
 });
 
-// Tambahkan event listener untuk toggle visibility tabel
-var toggleTableVisibilityBtn = document.getElementById('toggleTableVisibilityBtn');
-toggleTableVisibilityBtn.addEventListener('click', function () {
-  var tableContainer = document.querySelector('.table-container');
-  if (!isTableVisible) {
-    tableContainer.style.display = 'block';
-    tableContainer.classList.add('expanded');
-    toggleTableVisibilityBtn.textContent = 'Hide Table';
-    isTableVisible = true;
-  } else {
-    tableContainer.style.display = 'none';
-    tableContainer.classList.remove('expanded');
-    toggleTableVisibilityBtn.textContent = 'Show Table';
-    isTableVisible = false;
-  }
-});
+
