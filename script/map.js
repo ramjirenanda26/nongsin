@@ -41,17 +41,100 @@ fetch('data/cafe_v2.geojson')
 
     // Mengatur pop-up informasi untuk setiap titik geojson
     cafeLayer.eachLayer(function (layer) {
-      var popupContent = '<b>Nama Cafe:</b> ' + layer.feature.properties.title + '<br>' + '<b>Skor:</b> ' + layer.feature.properties.totalScore + '<br>' + '<b>Jumlah Review:</b> ' + layer.feature.properties.reviewsCount + '<br>';
+      // Mendapatkan nilai skor dan menghitung nilai yang dibagi 10
+      var originalScore = layer.feature.properties.totalScore;
+      var dividedScore = originalScore > 5 ? originalScore / 10 : originalScore;
 
-      if (layer.feature.properties.website) {
-        popupContent += '<b>Website:</b> <a href="' + layer.feature.properties.website + '" target="_blank">Visit Website</a><br>';
+      function generateStarRating(score, starColor) {
+        var fullStars = Math.floor(score);
+        var halfStar = score - fullStars >= 0.5 ? 1 : 0;
+        var emptyStars = 5 - fullStars - halfStar;
+
+        var starHtml = '';
+        for (var i = 0; i < fullStars; i++) {
+          starHtml += `<i class="fas fa-star" style="color: ${starColor};"></i>`;
+        }
+        if (halfStar) {
+          starHtml += `<i class="fas fa-star-half-alt" style="color: ${starColor};"></i>`;
+        }
+        for (var j = 0; j < emptyStars; j++) {
+          starHtml += `<i class="far fa-star" style="color: ${starColor};"></i>`;
+        }
+
+        return starHtml;
       }
 
-      if (layer.feature.properties.url) {
-        popupContent += '<b>Maps:</b> <a href="' + layer.feature.properties.url + '" target="_blank">Go to maps</a><br>';
+      function openGoogleMaps(url) {
+        window.open(url, '_blank');
       }
 
-      layer.bindPopup(popupContent);
+      // Membuat konten popup dengan kustomisasi, termasuk nilai yang telah dihitung
+      var starRating = generateStarRating(dividedScore, 'orange');
+
+      var popupContent = `
+      <div class="custom-popup">
+        <h1 class="popup-title">Nama Cafe:</h1>
+        <h2 class="popup-text">${layer.feature.properties.title}</h2>
+        <hr>
+        <div class="button-container">
+        <a href="${layer.feature.properties.url}" target="_blank" class="popup-button">
+          <img src="dist/images/gmaps.png" alt="Google Maps" class="button-icon">
+          Tampilkan di Google Maps
+        </a>
+      </div>
+        <p class="popup-text"><b>Rating:</b> ${starRating}</p>
+        <p class="popup-text"><b>Jumlah Review:</b> ${layer.feature.properties.reviewsCount}</p>
+        <p class="popup-text"><b>Website:</b> ${layer.feature.properties.website !== null ? layer.feature.properties.website : '-'}</p>
+      </div>
+    `;
+
+      // Menambahkan konten popup ke layer
+      layer.bindPopup(popupContent, {
+        closeButton: true, // Menampilkan tombol close
+      });
+
+      // Mengatur gaya popup dengan CSS (seperti sebelumnya)
+      var customPopupStyle = `
+      .custom-popup {
+        max-width: 200px;
+        padding: 10px;
+        text-align: center;
+      }
+      .popup-title {
+        font-size: 18px;
+        margin: 0;
+      }
+      .popup-text {
+        font-size: 14px;
+        margin: 5px 0;
+      }
+      .button-container {
+        margin-top: 10px;
+      }
+      .popup-button {
+        display: inline-block;
+        padding: 5px 10px;
+        background-color: #91C8E4;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        text-decoration: none; /* Tambahkan ini agar tautan terlihat seperti tombol */
+        border-radius: 10px;
+      }
+      .popup-button:hover {
+        background-color: #ffffff;
+      }
+      .button-icon {
+        vertical-align: middle;
+        height: 20px;
+        margin-right: 5px;
+      }
+      `;
+
+      // Menerapkan gaya popup pada peta
+      var customPopupStyleElement = document.createElement('style');
+      customPopupStyleElement.appendChild(document.createTextNode(customPopupStyle));
+      document.head.appendChild(customPopupStyleElement);
     });
 
     // Mengatur peta agar langsung difokuskan ke layer cafeLayer
@@ -111,6 +194,13 @@ fetch('data/uni_buffer_2km_gcs.geojson')
 
     // Perbarui batas peta berdasarkan data polygon
     map.fitBounds(bufferLayer.getBounds());
+
+    var uniRows = document.querySelectorAll('#cafeTable tbody tr');
+    uniRows.forEach(function (row, index) {
+      row.addEventListener('click', function () {
+        zoomToFeatureOnMap(index);
+      });
+    });
   })
   .catch((error) => {
     console.error('Error loading uni_buffer_2km_gcs.geojson:', error);
@@ -161,10 +251,10 @@ searchInput.addEventListener('input', function () {
 });
 
 function filterCafeTable(keyword) {
-  var cafeRows = document.querySelectorAll('#cafeTable tbody tr');
+  var uniRows = document.querySelectorAll('#cafeTable tbody tr');
   keyword = keyword.toLowerCase();
 
-  cafeRows.forEach(function (row) {
+  uniRows.forEach(function (row) {
     var cafeName = row.querySelector('td:first-child').textContent.toLowerCase();
     if (cafeName.includes(keyword)) {
       row.style.display = 'table-row';
@@ -207,10 +297,6 @@ function updateTable() {
     var row = document.createElement('tr');
     row.innerHTML = `
       <td>${cafeInfo.title}</td>
-      <td>${cafeInfo.totalScore}</td>
-      <td>${cafeInfo.reviewsCount}</td>
-      <td>${cafeInfo.website ? `<a href="${cafeInfo.website}" target="_blank">Visit Website</a>` : '-'}</td>
-      <td>${cafeInfo.url ? `<a href="${cafeInfo.url}" target="_blank">Go to maps</a>` : '-'}</td>
     `;
     cafeTableBody.appendChild(row);
 
