@@ -7,15 +7,15 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://carto.com/attributions">CartoDB</a>',
 }).addTo(map);
 
-// Menambahkan layer untuk data cafe_v2.geojson
+// Menambahkan layer untuk data cafe_v3.geojson
 var cafeLayer = L.geoJSON();
 
-// Memuat data cafe_v2.geojson menggunakan AJAX
-// Memuat data cafe_v2.geojson menggunakan AJAX
-fetch('data/cafe_v2.geojson')
+// Memuat data cafe_v3.geojson menggunakan AJAX
+// Memuat data cafe_v3.geojson menggunakan AJAX
+fetch('data/cafe_v3.geojson')
   .then((response) => response.json())
   .then((data) => {
-    // Menambahkan data cafe_v2.geojson ke layer cafeLayer
+    // Menambahkan data cafe_v3.geojson ke layer cafeLayer
     cafeLayer.addData(data);
 
     // Mengatur clustering pada layer cafeLayer menggunakan Leaflet.markercluster
@@ -141,7 +141,7 @@ fetch('data/cafe_v2.geojson')
     // Mengatur peta agar langsung difokuskan ke layer cafeLayer
     map.fitBounds(cafeLayer.getBounds());
 
-    // Tambahkan event listener setelah data cafe_v2.geojson selesai dimuat
+    // Tambahkan event listener setelah data cafe_v3.geojson selesai dimuat
     var cafeRows = document.querySelectorAll('#cafeTable tbody tr');
     cafeRows.forEach(function (row, index) {
       row.addEventListener('click', function () {
@@ -153,7 +153,7 @@ fetch('data/cafe_v2.geojson')
     updateTable();
   })
   .catch((error) => {
-    console.error('Error loading cafe_v2.geojson:', error);
+    console.error('Error loading cafe_v3.geojson:', error);
   });
 
 
