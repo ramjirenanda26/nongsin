@@ -79,7 +79,7 @@ fetch('data/cafe_v2.geojson')
         <div class="button-container">
         <a href="${layer.feature.properties.url}" target="_blank" class="popup-button">
           <img src="dist/images/gmaps.png" alt="Google Maps" class="button-icon">
-          Tampilkan di Google Maps
+          Google Maps
         </a>
       </div>
         <p class="popup-text"><b>Rating:</b> ${starRating}</p>
@@ -114,7 +114,7 @@ fetch('data/cafe_v2.geojson')
       .popup-button {
         display: inline-block;
         padding: 5px 10px;
-        background-color: #91C8E4;
+        background-color: #ffffff;
         color: #fff;
         border: none;
         cursor: pointer;
@@ -122,7 +122,7 @@ fetch('data/cafe_v2.geojson')
         border-radius: 10px;
       }
       .popup-button:hover {
-        background-color: #ffffff;
+        background-color: #91C8E4;
       }
       .button-icon {
         vertical-align: middle;
