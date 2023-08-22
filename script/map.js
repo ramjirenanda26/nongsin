@@ -73,19 +73,18 @@ fetch('data/cafe_v5.geojson')
       var starRating = generateStarRating(dividedScore, 'orange');
 
       var popupContent = `
-      <div class="custom-popup">
-        <h1 class="popup-title">Nama Cafe:</h1>
-        <h2 class="popup-text">${layer.feature.properties.title}</h2>
+      <div class="custom-popup" style="font-family: 'Poppins'">
+        <h1 class="popup-title"><b>${layer.feature.properties.title}</b></h1>
         <hr>
         <div class="button-container">
         <a href="${layer.feature.properties.url}" target="_blank" class="popup-button">
           <img src="dist/images/gmaps.png" alt="Google Maps" class="button-icon">
-          Google Maps
+          <b>Google Maps</b>
         </a>
       </div>
         <p class="popup-text"><b>Rating:</b> ${starRating}</p>
         <p class="popup-text"><b>Jumlah Review:</b> ${layer.feature.properties.reviewsCount}</p>
-        <p class="popup-text"><b>Website:</b> ${layer.feature.properties.website !== null ? layer.feature.properties.website : '-'}</p>
+        <p class="popup-text"><b>Website:</b> ${layer.feature.properties.website !== null ? `<a href="${layer.feature.properties.website}" target="_blank">Visit Website</a>` : '-'}</p>
       </div>
     `;
 
