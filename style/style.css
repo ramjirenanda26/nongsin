@@ -88,20 +88,12 @@ body,
   /* Warna latar belakang untuk judul tabel */
 }
 
-.search-container {
-  padding: 8px;
-  /* Berikan padding pada kontainer pencarian */
-}
-
 .search-container input {
-  width: 200px;
-  /* Lebarkan kolom input pencarian */
-  padding: 4px;
-  /* Berikan padding pada input pencarian */
+  width: 110px;
 }
 
 .search-container button {
-  padding: 4px 8px;
+  padding: 0px 0px;
   /* Berikan padding pada tombol pencarian */
   background-color: #4caf50;
   color: #fff;
@@ -160,10 +152,11 @@ body,
   color: #fff;
   border: none;
   border-radius: 4px;
-  padding: 10px 20px;
+  padding: 10px;
   cursor: pointer;
   transition: left 0.3s ease-in-out;
   z-index: 1001;
+  align-items: center;
 }
 
 .sidebar-toggle-btn i {
@@ -171,11 +164,232 @@ body,
 }
 
 .sidebar.visible .sidebar-toggle-btn {
-  left: 400px;
+  left: calc(100% - 400px);
   /* Atur sesuai lebar sidebar Anda */
 }
 
 /* Adjustments for the table in the sidebar */
 .table-container {
+  display: flex;
+  flex-direction: column; /* Menggunakan tata letak kolom */
+  align-items: center; /* Mengalignir elemen horizontal ke tengah */
   padding: 20px;
+  margin: 10px;
+}
+
+.title {
+  font-family: Poppins;
+}
+
+#searchCafeInput {
+  border-radius: 6px;
+  padding: 7px;
+  margin: 5px;
+}
+
+#universityDropdown {
+  margin: 10 0 10 0px; /* Tambahkan margin atas untuk memberi jarak antara tombol */
+  padding: 5px;
+}
+
+/* Styling for the dropdown list container */
+.dropdown-list {
+  max-height: 200px; /* Set a maximum height to enable scrolling */
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds max-height */
+  border: 1px solid #ddd; /* Add a border for separation */
+  border-radius: 5 px; /* Rounded corners */
+  background-color: #fff; /* White background */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  padding: 10px; /* Add some padding */
+}
+
+/* Styling for each dropdown list item */
+.dropdown-list a {
+  display: block; /* Display links as block elements */
+  padding: 8px 12px; /* Add some padding around each link */
+  color: #333; /* Text color */
+  text-decoration: none; /* Remove underlines */
+  transition: background-color 0.3s ease; /* Add a smooth background transition on hover */
+}
+
+/* Styling for selected dropdown list item */
+.dropdown-list a.selected {
+  background-color: #f0f0f0; /* Highlight color for selected item */
+}
+
+/* Add a hover effect for dropdown list items */
+.dropdown-list a:hover {
+  background-color: #f5f5f5; /* Background color on hover */
+}
+
+.yellow-star {
+  color: #f0de36;
+}
+
+.text {
+  color: #91c8e4;
+  text-decoration: none;
+}
+
+.text:hover {
+  color: #4682a9;
+}
+
+.about-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  text-align: center;
+}
+
+.about-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.about-link:hover {
+  background-color: #333; /* Darken the color on hover */
+}
+
+#cardModal {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #f8f9fa;
+  border: none;
+  border-radius: 10px;
+}
+
+.modal-header {
+  background-color: #343a40;
+  color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.modal-header button.btn-close {
+  color: white !important;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+}
+
+/* Gaya untuk kartu-kartu di dalam modal */
+.card {
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+/* Tombol close di pojok modal */
+.btn-close {
+  color: #fff;
+}
+
+/* Gaya hover untuk tombol close */
+.btn-close:hover {
+  color: #ccc;
+}
+
+/* Mengatur ukuran modal besar */
+.modal-lg {
+  max-width: 800px;
+}
+
+.instagram-link {
+  color: #517fa4;
+  text-decoration: none;
+  transition: color 0.3s, text-decoration 0.3s;
+}
+
+.instagram-link:hover {
+  color: #4e6bff;
+  text-decoration: underline;
+}
+
+.maps-link {
+  color: #e74c3c;
+  text-decoration: none;
+  transition: color 0.3s, text-decoration 0.3s;
+}
+
+.maps-link:hover {
+  color: #ff5b5b;
+  text-decoration: underline;
+}
+
+/* Additional styles for cards */
+.card {
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 300px; /* Atur lebar sidebar untuk laptop */
+  }
+
+  .sidebar-toggle-btn {
+    left: 300px; /* Atur posisi tombol "Toggle Sidebar" sesuai lebar sidebar */
+  }
+
+  .table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #searchCafeInput,
+  #universityDropdown {
+    margin: 10px auto;
+    /* Center the elements horizontally */
+  }
+
+  #universityDropdown {
+    display: block;
+    /* Ensure the dropdown is a block element for centering */
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .search-container {
+    display: flex;
+    align-items: center;
+  }
+
+  #searchCafeInput {
+    margin-left: 10px;
+  }
+
+  #universityDropdown {
+    margin-left: 10px;
+  }
 }
