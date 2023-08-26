@@ -7,54 +7,47 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://carto.com/attributions">CartoDB</a>',
 }).addTo(map);
 
+// var locateControl = L.control
+//   .locate({
+//     position: 'bottomright',
+//     drawCircle: true,
+//     follow: true,
+//     setView: true,
+//     keepCurrentZoomLevel: false,
+//     markerStyle: {
+//       weight: 1,
+//       opacity: 0.8,
+//       fillOpacity: 0.8,
+//     },
+//     circleStyle: {
+//       weight: 1,
+//       clickable: false,
+//     },
+//     icon: 'fas fa-crosshairs',
+//     metric: true,
+//     strings: {
+//       title: 'Click for Your Location',
+//       popup: "You're here. Accuracy {distance} {unit}",
+//       outsideMapBoundsMsg: 'Not available',
+//     },
+//     locateOptions: {
+//       maxZoom: 16,
+//       watch: true,
+//       enableHighAccuracy: true,
+//       maximumAge: 10000,
+//       timeout: 10000,
+//     },
+//   })
+//   .addTo(map);
+
 // Menambahkan layer untuk data clean_cafe.geojson
 var cafeLayer = L.geoJSON();
-
-<<<<<<< HEAD
-// Geoloc
-var locateControl = L.control
-  .locate({
-    position: 'bottomright',
-    drawCircle: true,
-    follow: true,
-    setView: true,
-    keepCurrentZoomLevel: false,
-    markerStyle: {
-      weight: 1,
-      opacity: 0.8,
-      fillOpacity: 0.8,
-    },
-    circleStyle: {
-      weight: 1,
-      clickable: false,
-    },
-    icon: 'fas fa-crosshairs',
-    metric: true,
-    strings: {
-      title: 'Click for Your Location',
-      popup: "You're here. Accuracy {distance} {unit}",
-      outsideMapBoundsMsg: 'Not available',
-    },
-    locateOptions: {
-      maxZoom: 16,
-      watch: true,
-      enableHighAccuracy: true,
-      maximumAge: 10000,
-      timeout: 10000,
-    },
-  })
-  .addTo(map);
 
 // Pagination
 var itemsPerPage = 10;
 
 // Memuat data cafe_v2.geojson menggunakan AJAX
 fetch('data/cafe_v2.geojson')
-=======
-// Memuat data clean_cafe.geojson menggunakan AJAX
-// Memuat data clean_cafe.geojson menggunakan AJAX
-fetch('data/clean_cafe.geojson')
->>>>>>> d446f7440a85a578cfcdf839600e28c6e82fc7f8
   .then((response) => response.json())
   .then((data) => {
     // Menambahkan data clean_cafe.geojson ke layer cafeLayer
@@ -383,13 +376,12 @@ function updateTable() {
     row.innerHTML = `
       <td>${cafeInfo.title}</td>
       <td>${score.toFixed(1)} ${starIcon}</td>
-      <td>${
-        cafeInfo.url
-          ? `<a class="text" href="${layer.feature.properties.url}" target="_blank" class="popup-button">
+      <td>${cafeInfo.url
+        ? `<a class="text" href="${layer.feature.properties.url}" target="_blank" class="popup-button">
       <img src="dist/images/gmaps.png" alt="Google Maps" class="button-icon">
       Google Maps
     </a>`
-          : '-'
+        : '-'
       }</td>`;
 
     // Menambahkan event listener untuk efek hover pada baris tabel
