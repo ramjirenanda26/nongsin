@@ -324,6 +324,19 @@ function filterFeaturesByExtent() {
 var toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
 var sidebar = document.getElementById('sidebar');
 
+function adjustToggleBtnPosition() {
+  var sidebarWidth = sidebar.offsetWidth;
+  var toggleBtnWidth = toggleSidebarBtn.offsetWidth;
+  var expandedPosition = sidebarWidth + 10; // Adjust as needed
+  var collapsedPosition = 10; // Adjust as needed
+
+  if (sidebar.classList.contains('visible')) {
+    toggleSidebarBtn.style.left = expandedPosition + 'px';
+  } else {
+    toggleSidebarBtn.style.left = collapsedPosition + 'px';
+  }
+}
+
 // Fungsi untuk menyesuaikan posisi tombol
 document.addEventListener('DOMContentLoaded', function () {
   var toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
@@ -340,19 +353,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Call the adjustToggleBtnPosition function to adjust the button position
     adjustToggleBtnPosition();
   });
-
-  function adjustToggleBtnPosition() {
-    var sidebarWidth = sidebar.offsetWidth;
-    var toggleBtnWidth = toggleSidebarBtn.offsetWidth;
-    var expandedPosition = sidebarWidth + 10; // Adjust as needed
-    var collapsedPosition = 10; // Adjust as needed
-
-    if (sidebar.classList.contains('visible')) {
-      toggleSidebarBtn.style.left = expandedPosition + 'px';
-    } else {
-      toggleSidebarBtn.style.left = collapsedPosition + 'px';
-    }
-  }
 
   // Call adjustToggleBtnPosition initially and on window resize
   adjustToggleBtnPosition();
@@ -378,12 +378,13 @@ function updateTable() {
     row.innerHTML = `
       <td>${cafeInfo.title}</td>
       <td>${score.toFixed(1)} ${starIcon}</td>
-      <td>${cafeInfo.url
-        ? `<a class="text" href="${layer.feature.properties.url}" target="_blank" class="popup-button">
+      <td>${
+        cafeInfo.url
+          ? `<a class="text" href="${layer.feature.properties.url}" target="_blank" class="popup-button">
       <img src="dist/images/gmaps.png" alt="Google Maps" class="button-icon">
       Google Maps
     </a>`
-        : '-'
+          : '-'
       }</td>`;
 
     // Menambahkan event listener untuk efek hover pada baris tabel
