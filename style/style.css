@@ -352,6 +352,43 @@ body,
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+#aboutModalLabel {
+  align-text: center;
+}
+
+/* Styling untuk container social-icons */
+.social-icons {
+  text-align: center;
+  margin: 20px;
+}
+
+/* Styling untuk paragraf */
+.social-icons p {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* Styling untuk setiap ikon sosial media */
+.social-icon {
+  display: inline-block;
+  margin: 0 10px;
+  text-decoration: none;
+  color: #333; /* Warna teks dasar */
+}
+
+/* Styling untuk gambar ikon */
+.social-icon img {
+  width: 40px;
+  height: 40px;
+  vertical-align: middle;
+}
+
+/* Styling untuk teks di sebelah ikon */
+.social-icon span {
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+}
 @media screen and (max-width: 768px) {
   .sidebar {
     width: 300px; /* Atur lebar sidebar untuk laptop */

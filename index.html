@@ -54,9 +54,9 @@
     <!-- Sidebar Content -->
     <div class="sidebar" id="sidebar">
       <div class="table-container">
-        <h1 class="title">Cafe Information</h1>
+        <h1 class="title">Café Information</h1>
         <div class="search-container">
-          <input type="text" id="searchCafeInput" class="form-control" placeholder="Search Cafe..." />
+          <input type="text" id="searchCafeInput" class="form-control" placeholder="Search Café..." />
           <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="universityDropdown" data-bs-toggle="dropdown" aria-expanded="false">University</button>
             <ul class="dropdown-menu" aria-labelledby="universityDropdown" id="universityListSidebar">
@@ -69,7 +69,7 @@
             <!-- Tabel cafe akan ditambahkan di sini menggunakan JavaScript -->
             <thead>
               <tr>
-                <th>Cafe Name</th>
+                <th>Café Name</th>
                 <th>Score</th>
                 <th>Maps</th>
               </tr>
@@ -88,27 +88,38 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="aboutModalLabel">Tentang Kami</h5>
+            <h5 class="modal-title" id="aboutModalLabel">&lt;/&gt; Spatialogy</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <p>Nama Profile: Spatialogy</p>
-            <p>Kami adalah perusahaan yang bergerak di bidang XYZ. Kami menyediakan layanan dan produk berkualitas tinggi untuk kebutuhan Anda.</p>
-            <p>Alamat: Jalan Contoh No. 123, Kota Contoh</p>
+            <p>Spatialogy merupakan platform yang dibentuk untuk mewadahi pemikiran-pemikiran yang berkaitan dengan aspek spasial.</p>
+            <p>Spatialogy juga mewadahi keinginan bersama menciptakan ruang untuk mengenal dunia spatial.</p>
             <div class="text-center">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#cardModal">Rekomendasi Cafe dari Kami!</button>
+              <p>Jangan lupa cek rekomendasi Café dari kami ya!</p>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#cardModal">Rekomendasi Café dari Kami!</button>
+            </div>
+            <div class="social-icons">
+              <p>Mau nongkrong bareng? Jangan ragu buat hubungi kami ya!</p>
+              <a href="https://wa.me/6282133371720" target="_blank" class="social-icon">
+                <img src="dist/images/whatsapp.png" alt="WhatsApp Logo" />
+                <span>Contact Person Spatialogy</span>
+              </a>
+              <a href="https://www.instagram.com/spatialogy/" target="_blank" class="social-icon">
+                <img src="dist/images/instagram.png" alt="Instagram Logo" />
+                <span>@spatialogy</span>
+              </a>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Modal "Rekomendasi Cafe dari Kami" -->
+    <!-- Modal "Rekomendasi Café dari Kami" -->
     <div class="modal fade" id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="cardModalLabel">Rekomendasi Cafe dari Kami</h5>
+            <h5 class="modal-title" id="cardModalLabel">Rekomendasi Café dari Kami</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body" id="cardModalBody">

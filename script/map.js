@@ -80,7 +80,6 @@ fetch('data/clean_cafe.geojson')
     cafeLayer.eachLayer(function (layer) {
       // Mendapatkan nilai skor dan menghitung nilai yang dibagi 10
       var originalScore = layer.feature.properties.totalScore;
-      var dividedScore = originalScore > 5 ? originalScore / 10 : originalScore;
 
       function generateStarRating(score, starColor) {
         var fullStars = Math.floor(score);
@@ -106,7 +105,7 @@ fetch('data/clean_cafe.geojson')
       }
 
       // Membuat konten popup dengan kustomisasi, termasuk nilai yang telah dihitung
-      var starRating = generateStarRating(dividedScore, 'orange');
+      var starRating = generateStarRating(originalScore, 'orange');
 
       var popupContent = `
       <div class="custom-popup">
@@ -373,7 +372,7 @@ function updateTable() {
     var row = document.createElement('tr');
     var starIcon = '<i class="fas fa-star yellow-star"></i>'; // Ikon bintang Font Awesome
 
-    var score = cafeInfo.totalScore / 10; // Menghitung skor yang dibagi dengan 10
+    var score = cafeInfo.totalScore; // Menghitung skor yang dibagi dengan 10
 
     row.innerHTML = `
       <td>${cafeInfo.title}</td>
@@ -412,6 +411,13 @@ var cafes = [
   { name: 'Renan', cafe: 'Lavana Coffee', ig: 'ramjirenanda.s', location: 'https://goo.gl/maps/ZDavCvUQ4LnBAQ748' },
   { name: 'Michelle', cafe: 'Svarga Flora Coffee & Plants', ig: 'mchllhans', location: 'https://goo.gl/maps/M7Bed1BAoy38sU849' },
   { name: 'Zani', cafe: 'SiNERGI Co Working Space & Network Space', ig: 'raidanazn', location: 'https://goo.gl/maps/jDonfpVbrrVuMhRq8' },
+  { name: 'Raga', cafe: 'Shelterby.canopeecoffee', ig: 'ragaharits', location: 'https://goo.gl/maps/Me6Vqm8zgVsYqEiW8' },
+  { name: 'Wisnu', cafe: 'Kopi Lumus', ig: 'yowisnu_', location: 'https://goo.gl/maps/zufek1rc4bqVU1gC8' },
+  { name: 'Zaidan', cafe: 'Angkringan Kebun', ig: 'zaidanalghifarif', location: 'https://goo.gl/maps/EhffGJvHzh1QbdWe9' },
+  { name: 'Galuh', cafe: 'ARAH Coffee Pandawa', ig: 'galuhazzahrac', location: 'https://goo.gl/maps/PVKUauBAo5w4eQWV8' },
+  { name: 'Palsum', cafe: 'Sebelas Coffee Sapen', ig: 'naufalkusumap', location: 'https://goo.gl/maps/MYVyhgQLoyYuwHGE6' },
+  { name: 'Yellove', cafe: 'Silol Kopi & Eatery', ig: 'yellove_devitaraja', location: 'https://goo.gl/maps/9eqQtTTbX9D3kXVG7' },
+  { name: 'Tolo', cafe: 'Opposite coffee', ig: 'son.tolo.yo', location: 'https://goo.gl/maps/imhmMZjfhABmU2w19' },
 ];
 function loadCards() {
   var cardModalBody = document.getElementById('cardModalBody');
