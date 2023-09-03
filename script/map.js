@@ -7,79 +7,107 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://carto.com/attributions">CartoDB</a>',
 }).addTo(map);
 
-// var locateControl = L.control
-//   .locate({
-//     position: 'bottomright',
-//     drawCircle: true,
-//     follow: true,
-//     setView: true,
-//     keepCurrentZoomLevel: false,
-//     markerStyle: {
-//       weight: 1,
-//       opacity: 0.8,
-//       fillOpacity: 0.8,
-//     },
-//     circleStyle: {
-//       weight: 1,
-//       clickable: false,
-//     },
-//     icon: 'fas fa-crosshairs',
-//     metric: true,
-//     strings: {
-//       title: 'Click for Your Location',
-//       popup: "You're here. Accuracy {distance} {unit}",
-//       outsideMapBoundsMsg: 'Not available',
-//     },
-//     locateOptions: {
-//       maxZoom: 16,
-//       watch: true,
-//       enableHighAccuracy: true,
-//       maximumAge: 10000,
-//       timeout: 10000,
-//     },
-//   })
-//   .addTo(map);
-
 // Menambahkan layer untuk data clean_cafe.geojson
 var cafeLayer = L.geoJSON();
 
+// Geoloc
+var locateControl = L.control
+  .locate({
+    position: 'bottomright',
+    drawCircle: true,
+    follow: true,
+    setView: true,
+    keepCurrentZoomLevel: false,
+    markerStyle: {
+      weight: 1,
+      opacity: 0.8,
+      fillOpacity: 0.8,
+    },
+    circleStyle: {
+      weight: 1,
+      clickable: false,
+    },
+    icon: 'fas fa-crosshairs',
+    metric: true,
+    strings: {
+      title: 'Click for Your Location',
+      popup: "You're here. Accuracy {distance} {unit}",
+      outsideMapBoundsMsg: 'Not available',
+    },
+    locateOptions: {
+      maxZoom: 16,
+      watch: true,
+      enableHighAccuracy: true,
+      maximumAge: 10000,
+      timeout: 10000,
+    },
+  })
+  .addTo(map);
+
 // Pagination
 var itemsPerPage = 10;
+var heatmapLayer, markers;
 
-// Memuat data cafe_v2.geojson menggunakan AJAX
-fetch('data/cafe_v2.geojson')
+// Inisialisasi markers di luar .then()
+var markers = L.markerClusterGroup({
+  zIndexOffset: 100,
+});
+
+// Inisialisasi heatmapLayer di luar .then()
+var heatmapLayer = L.heatLayer([], {
+  radius: 25, // Ukuran radius
+  blur: 15, // Tingkat blur
+  maxZoom: 15, // Aktifkan heatmap saat zoom < 16
+});
+
+
+// Memuat data clean_cafe.geojson menggunakan AJAX
+fetch('data/clean_cafe.geojson')
   .then((response) => response.json())
   .then((data) => {
     // Menambahkan data clean_cafe.geojson ke layer cafeLayer
     cafeLayer.addData(data);
 
-    // Mengatur clustering pada layer cafeLayer menggunakan Leaflet.markercluster
-    var markers = L.markerClusterGroup({
-      zIndexOffset: 100,
+    // Tambahkan data ke heatmapLayer
+    data.features.forEach(function (feature) {
+      var coordinates = feature.geometry.coordinates;
+      heatmapLayer.addLatLng([coordinates[1], coordinates[0]]);
     });
 
-    cafeLayer.eachLayer(function (layer) {
-      var redMarker = L.AwesomeMarkers.icon({
-        icon: 'mug-hot',
-        markerColor: 'cadetblue',
-        stylePrefix: 'fa',
-        prefix: 'fa',
-      });
+    // Fungsi untuk menambahkan marker layer
+    function addMarkerLayer() {
+      // Dapatkan tingkat zoom saat ini
+      var currentZoom = map.getZoom();
 
-      layer.setIcon(redMarker);
-      markers.addLayer(layer);
-    });
+      // Periksa apakah tingkat zoom memenuhi syarat
+      if (currentZoom >= 16) {
+        cafeLayer.eachLayer(function (layer) {
+          var redMarker = L.AwesomeMarkers.icon({
+            icon: 'mug-hot',
+            markerColor: 'cadetblue',
+            stylePrefix: 'fa',
+            prefix: 'fa',
+          });
 
-    markers.addLayers(cafeLayer.getLayers());
+          layer.setIcon(redMarker);
+          markers.addLayer(layer);
+        });
 
-    // Menambahkan layer cafeLayer dengan clustering ke peta
-    map.addLayer(markers);
+        markers.addLayers(cafeLayer.getLayers());
+        // Menambahkan layer cafeLayer dengan clustering ke peta
+        map.addLayer(markers);
+      }
+    }
+
+    // Fungsi untuk menambahkan heatmap layer
+    function addHeatmapLayer() {
+      map.addLayer(heatmapLayer);
+    }
 
     // Mengatur pop-up informasi untuk setiap titik geojson
     cafeLayer.eachLayer(function (layer) {
       // Mendapatkan nilai skor dan menghitung nilai yang dibagi 10
       var originalScore = layer.feature.properties.totalScore;
-      var dividedScore = originalScore > 5 ? originalScore / 10 : originalScore;
 
       function generateStarRating(score, starColor) {
         var fullStars = Math.floor(score);
@@ -105,21 +133,22 @@ fetch('data/cafe_v2.geojson')
       }
 
       // Membuat konten popup dengan kustomisasi, termasuk nilai yang telah dihitung
-      var starRating = generateStarRating(dividedScore, 'orange');
+      var starRating = generateStarRating(originalScore, 'orange');
 
       var popupContent = `
-      <div class="custom-popup" style="font-family: 'Poppins'">
-        <h1 class="popup-title"><b>${layer.feature.properties.title}</b></h1>
+      <div class="custom-popup">
+        <h1 class="popup-title">Nama Cafe:</h1>
+        <h2 class="popup-text">${layer.feature.properties.title}</h2>
         <hr>
         <div class="button-container">
         <a href="${layer.feature.properties.url}" target="_blank" class="popup-button">
           <img src="dist/images/gmaps.png" alt="Google Maps" class="button-icon">
-          <b>Google Maps</b>
+          Google Maps
         </a>
       </div>
         <p class="popup-text"><b>Rating:</b> ${starRating}</p>
         <p class="popup-text"><b>Jumlah Review:</b> ${layer.feature.properties.reviewsCount}</p>
-        <p class="popup-text"><b>Website:</b> ${layer.feature.properties.website !== null ? `<a href="${layer.feature.properties.website}" target="_blank">Visit Website</a>` : '-'}</p>
+        <p class="popup-text"><b>Website:</b> ${layer.feature.properties.website !== null ? layer.feature.properties.website : '-'}</p>
       </div>
     `;
 
@@ -183,41 +212,30 @@ fetch('data/cafe_v2.geojson')
       });
     });
 
+    // Panggil fungsi addHeatmapLayer saat pertama kali data dimuat
+    addHeatmapLayer();
+
+    // Panggil fungsi addMarkerLayer saat pertama kali data dimuat
+    addMarkerLayer();
+
     // Panggil fungsi updateTable();
     updateTable();
+
+    // Panggil fungsi addMarkerLayer atau addHeatmapLayer saat peta bergerak
+    map.on('moveend', function () {
+      var currentZoom = map.getZoom();
+      if (currentZoom < 16) {
+        addHeatmapLayer();
+        map.removeLayer(markers); // Hapus layer marker jika zoom kurang dari 16
+      } else {
+        map.removeLayer(heatmapLayer);
+        addMarkerLayer(); // Tambahkan layer marker jika zoom mencapai 16 atau lebih
+      }
+    });
+
   })
   .catch((error) => {
     console.error('Error loading clean_cafe.geojson:', error);
-  });
-
-fetch('data/uni_buffer_2km_gcs.geojson')
-  .then((response) => response.json())
-  .then((data) => {
-    // Buat layer dari data polygon dengan simbologi yang diinginkan dan atur interaksi hover
-    var bufferLayer = L.geoJSON(data, {
-      style: function (feature) {
-        return {
-          fillColor: 'blue', // Warna biru muda
-          fillOpacity: 0, // Set fillOpacity 0 untuk membuat berlubang (hollow)
-          color: 'blue', // Warna garis
-          weight: 0, // Ketebalan garis
-        };
-      },
-      onEachFeature: onEachFeature, // Atur interaksi hover pada setiap fitur
-    }).addTo(map);
-
-    // Perbarui batas peta berdasarkan data polygon
-    map.fitBounds(bufferLayer.getBounds());
-
-    var uniRows = document.querySelectorAll('#cafeTable tbody tr');
-    uniRows.forEach(function (row, index) {
-      row.addEventListener('click', function () {
-        zoomToFeatureOnMap(index);
-      });
-    });
-  })
-  .catch((error) => {
-    console.error('Error loading uni_buffer_2km_gcs.geojson:', error);
   });
 
 // Setelah Anda memuat data GeoJSON universitas
@@ -322,6 +340,19 @@ function filterFeaturesByExtent() {
 var toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
 var sidebar = document.getElementById('sidebar');
 
+function adjustToggleBtnPosition() {
+  var sidebarWidth = sidebar.offsetWidth;
+  var toggleBtnWidth = toggleSidebarBtn.offsetWidth;
+  var expandedPosition = sidebarWidth + 10; // Adjust as needed
+  var collapsedPosition = 10; // Adjust as needed
+
+  if (sidebar.classList.contains('visible')) {
+    toggleSidebarBtn.style.left = expandedPosition + 'px';
+  } else {
+    toggleSidebarBtn.style.left = collapsedPosition + 'px';
+  }
+}
+
 // Fungsi untuk menyesuaikan posisi tombol
 document.addEventListener('DOMContentLoaded', function () {
   var toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
@@ -338,19 +369,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Call the adjustToggleBtnPosition function to adjust the button position
     adjustToggleBtnPosition();
   });
-
-  function adjustToggleBtnPosition() {
-    var sidebarWidth = sidebar.offsetWidth;
-    var toggleBtnWidth = toggleSidebarBtn.offsetWidth;
-    var expandedPosition = sidebarWidth + 10; // Adjust as needed
-    var collapsedPosition = 10; // Adjust as needed
-
-    if (sidebar.classList.contains('visible')) {
-      toggleSidebarBtn.style.left = expandedPosition + 'px';
-    } else {
-      toggleSidebarBtn.style.left = collapsedPosition + 'px';
-    }
-  }
 
   // Call adjustToggleBtnPosition initially and on window resize
   adjustToggleBtnPosition();
@@ -371,7 +389,7 @@ function updateTable() {
     var row = document.createElement('tr');
     var starIcon = '<i class="fas fa-star yellow-star"></i>'; // Ikon bintang Font Awesome
 
-    var score = cafeInfo.totalScore / 10; // Menghitung skor yang dibagi dengan 10
+    var score = cafeInfo.totalScore; // Menghitung skor yang dibagi dengan 10
 
     row.innerHTML = `
       <td>${cafeInfo.title}</td>
@@ -409,6 +427,13 @@ var cafes = [
   { name: 'Renan', cafe: 'Lavana Coffee', ig: 'ramjirenanda.s', location: 'https://goo.gl/maps/ZDavCvUQ4LnBAQ748' },
   { name: 'Michelle', cafe: 'Svarga Flora Coffee & Plants', ig: 'mchllhans', location: 'https://goo.gl/maps/M7Bed1BAoy38sU849' },
   { name: 'Zani', cafe: 'SiNERGI Co Working Space & Network Space', ig: 'raidanazn', location: 'https://goo.gl/maps/jDonfpVbrrVuMhRq8' },
+  { name: 'Raga', cafe: 'Shelterby.canopeecoffee', ig: 'ragaharits', location: 'https://goo.gl/maps/Me6Vqm8zgVsYqEiW8' },
+  { name: 'Wisnu', cafe: 'Kopi Lumus', ig: 'yowisnu_', location: 'https://goo.gl/maps/zufek1rc4bqVU1gC8' },
+  { name: 'Zaidan', cafe: 'Angkringan Kebun', ig: 'zaidanalghifarif', location: 'https://goo.gl/maps/EhffGJvHzh1QbdWe9' },
+  { name: 'Galuh', cafe: 'ARAH Coffee Pandawa', ig: 'galuhazzahrac', location: 'https://goo.gl/maps/PVKUauBAo5w4eQWV8' },
+  { name: 'Palsum', cafe: 'Sebelas Coffee Sapen', ig: 'naufalkusumap', location: 'https://goo.gl/maps/MYVyhgQLoyYuwHGE6' },
+  { name: 'Yellove', cafe: 'Silol Kopi & Eatery', ig: 'yellove_devitaraja', location: 'https://goo.gl/maps/9eqQtTTbX9D3kXVG7' },
+  { name: 'Tolo', cafe: 'Opposite coffee', ig: 'son.tolo.yo', location: 'https://goo.gl/maps/imhmMZjfhABmU2w19' },
 ];
 function loadCards() {
   var cardModalBody = document.getElementById('cardModalBody');
