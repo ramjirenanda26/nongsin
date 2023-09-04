@@ -7,7 +7,7 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://carto.com/attributions">CartoDB</a>',
 }).addTo(map);
 
-// Menambahkan layer untuk data clean_cafe.geojson
+// Menambahkan layer untuk data clean_cafe3.geojson
 var cafeLayer = L.geoJSON();
 
 // Geoloc
@@ -50,7 +50,8 @@ var heatmapLayer, markers;
 
 // Inisialisasi markers di luar .then()
 var markers = L.markerClusterGroup({
-  zIndexOffset: 100,
+  zIndexOffset: 250,
+  disableClusteringAtZoom: 17
 });
 
 // Inisialisasi heatmapLayer di luar .then()
@@ -61,11 +62,11 @@ var heatmapLayer = L.heatLayer([], {
 });
 
 
-// Memuat data clean_cafe.geojson menggunakan AJAX
-fetch('data/clean_cafe.geojson')
+// Memuat data clean_cafe3.geojson menggunakan AJAX
+fetch('data/clean_cafe3.geojson')
   .then((response) => response.json())
   .then((data) => {
-    // Menambahkan data clean_cafe.geojson ke layer cafeLayer
+    // Menambahkan data clean_cafe3.geojson ke layer cafeLayer
     cafeLayer.addData(data);
 
     // Tambahkan data ke heatmapLayer
@@ -204,7 +205,7 @@ fetch('data/clean_cafe.geojson')
     // Mengatur peta agar langsung difokuskan ke layer cafeLayer
     map.fitBounds(cafeLayer.getBounds());
 
-    // Tambahkan event listener setelah data clean_cafe.geojson selesai dimuat
+    // Tambahkan event listener setelah data clean_cafe3.geojson selesai dimuat
     var cafeRows = document.querySelectorAll('#cafeTable tbody tr');
     cafeRows.forEach(function (row, index) {
       row.addEventListener('click', function () {
@@ -235,11 +236,11 @@ fetch('data/clean_cafe.geojson')
 
   })
   .catch((error) => {
-    console.error('Error loading clean_cafe.geojson:', error);
+    console.error('Error loading clean_cafe3.geojson:', error);
   });
 
 // Setelah Anda memuat data GeoJSON universitas
-fetch('data/uni_point.geojson')
+fetch('data/kampus_jogja.geojson')
   .then((response) => response.json())
   .then((data) => {
     var pointLayer = L.geoJSON(data, {
@@ -254,7 +255,7 @@ fetch('data/uni_point.geojson')
       },
       onEachFeature: function (feature, layer) {
         // Mengatur popup untuk setiap titik dengan informasi dari atributnya
-        var popupContent = '<b>Nama:</b> ' + feature.properties.Nama + '<br>';
+        var popupContent = '<b>Nama:</b> ' + feature.properties.name + '<br>';
 
         layer.bindPopup(popupContent);
       },
@@ -292,7 +293,7 @@ fetch('data/uni_point.geojson')
     universityListSidebar.classList.add('dropdown-list');
   })
   .catch((error) => {
-    console.error('Error loading uni_point.geojson:', error);
+    console.error('Error loading kampus_jogja.geojson:', error);
   });
 
 function zoomToUniversity(coordinates) {
