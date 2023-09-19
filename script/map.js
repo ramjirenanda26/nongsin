@@ -505,12 +505,12 @@ function loadCards() {
 
     var cardText = document.createElement('p');
     cardText.className = 'card-text';
-    cardText.textContent = 'With supporting text below as a natural lead-in to additional content.';
+    cardText.textContent = 'Rekomendasi Café: ' + cafe.cafe; // Menampilkan nama kafe dari JSON
 
     var link = document.createElement('a');
     link.className = 'btn btn-primary';
     link.href = cafe.location; // Set the href as per your template
-    link.textContent = 'Go somewhere';
+    link.textContent = 'Go to ' + cafe.cafe;
 
     cardBody.appendChild(cardTitle);
     cardBody.appendChild(cardText);
