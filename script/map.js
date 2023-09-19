@@ -446,6 +446,7 @@ var cafes = [
   { name: 'Yellove', cafe: 'Silol Kopi & Eatery', ig: 'yellove_devitaraja', location: 'https://goo.gl/maps/9eqQtTTbX9D3kXVG7' },
   { name: 'Tolo', cafe: 'Opposite coffee', ig: 'son.tolo.yo', location: 'https://goo.gl/maps/imhmMZjfhABmU2w19' },
 ];
+
 function loadCards() {
   var cardModalBody = document.getElementById('cardModalBody');
   cardModalBody.innerHTML = ''; // Clear previous content
@@ -453,33 +454,46 @@ function loadCards() {
   cafes.forEach(function (cafe) {
     var card = document.createElement('div');
     card.className = 'card';
+    card.style.width = '20rem'; // Set width as per your template
+
     var cardBody = document.createElement('div');
     cardBody.className = 'card-body';
-    var cardTitle = document.createElement('h5');
+
+    var cardTitle = document.createElement('h4');
     cardTitle.className = 'card-title';
 
+    // Buat tautan Instagram dengan ikon Font Awesome
     var instagramLink = document.createElement('a');
-    instagramLink.className = 'instagram-link';
     instagramLink.href = 'https://www.instagram.com/' + cafe.ig;
-    instagramLink.textContent = cafe.name;
+    instagramLink.target = '_blank';
 
-    var mapsLink = document.createElement('a');
-    mapsLink.className = 'maps-link';
-    mapsLink.href = cafe.location;
-    mapsLink.textContent = cafe.cafe;
+    var instagramIcon = document.createElement('i');
+    instagramIcon.className = 'fab fa-instagram'; // Gunakan ikon Instagram dari Font Awesome
 
-    var mapsIcon = document.createElement('img');
-    mapsIcon.src = 'dist/images/gmaps.png'; // Change to the correct path
-    mapsIcon.width = 20; // Set the width in pixels
-    mapsIcon.height = 30; // Set the height in pixels
+    var instagramText = document.createTextNode(' ' + cafe.name); // Tambahkan spasi sebelum nama pengguna Instagram
 
+    // Gabungkan elemen-elemen tautan Instagram
+    instagramLink.appendChild(instagramIcon);
+    instagramLink.appendChild(instagramText);
+
+    // Tambahkan tautan Instagram ke elemen judul kartu
     cardTitle.appendChild(instagramLink);
-    cardTitle.appendChild(document.createTextNode(' - '));
-    cardTitle.appendChild(mapsIcon); // Add the Google Maps icon
-    cardTitle.appendChild(document.createTextNode(' '));
-    cardTitle.appendChild(mapsLink);
+
+    cardModalBody.appendChild(cardTitle);
+
+    var cardText = document.createElement('p');
+    cardText.className = 'card-text';
+    cardText.textContent = 'With supporting text below as a natural lead-in to additional content.';
+
+    var link = document.createElement('a');
+    link.className = 'btn btn-primary';
+    link.href = cafe.location; // Set the href as per your template
+    link.textContent = 'Go somewhere';
 
     cardBody.appendChild(cardTitle);
+    cardBody.appendChild(cardText);
+    cardBody.appendChild(link);
+
     card.appendChild(cardBody);
     cardModalBody.appendChild(card);
   });

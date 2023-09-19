@@ -370,6 +370,16 @@ body,
   color: #0056b3; /* Warna tautan situs web saat disorot */
 }
 
+.card-title a {
+  text-decoration: none !important; /* Hapus garis bawah dari tautan */
+  color: #c1558b; /* Warna teks tautan */
+}
+
+.card-title i {
+  font-size: 1.5rem; /* Ubah ukuran ikon sesuai kebutuhan Anda */
+  margin-right: 0.25rem; /* Beri jarak ke kanan antara ikon dan teks */
+}
+
 @media screen and (max-width: 768px) {
   .sidebar {
     width: 300px; /* Atur lebar sidebar untuk laptop */
