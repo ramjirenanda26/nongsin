@@ -1,147 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nongs.in</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
+      integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style/style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"
+      integrity="sha512-cUoWMYmv4H9TGP4hbm1mIjYo90WzIQFo/5jj+P5tQcDTf+iVR59RyIj/a9fRsBxzxt5Dnv/Ex7MzRIxcDwaOLw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>nongs.in</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet" />
-  <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
-    integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="style/style.css" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" />
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"
-    integrity="sha512-cUoWMYmv4H9TGP4hbm1mIjYo90WzIQFo/5jj+P5tQcDTf+iVR59RyIj/a9fRsBxzxt5Dnv/Ex7MzRIxcDwaOLw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Add Select2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/css/select2.min.css" rel="stylesheet" />
+    <!-- Geoloc -->
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.css" />
+    <!-- Leaflet.markercluster CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.0/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.0/dist/MarkerCluster.Default.css" />
 
-  <!-- Add Select2 CSS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/css/select2.min.css" rel="stylesheet" />
-  <!-- Geoloc -->
-  <link rel="stylesheet"
-    href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.css" />
-  <!-- Leaflet.markercluster CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.0/dist/MarkerCluster.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.0/dist/MarkerCluster.Default.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
+      integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
-    integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
+  <body>
+    <div id="map"></div>
+    <!-- Sidebar Toggle Button -->
+    <button id="toggleSidebarBtn" class="sidebar-toggle-btn">
+      <i id="toggleIcon" class="fas fa-chevron-right"></i>
+    </button>
 
-<body>
-  <div id="map"></div>
-  <!-- Sidebar Toggle Button -->
-  <button id="toggleSidebarBtn" class="sidebar-toggle-btn">
-    <i id="toggleIcon" class="fas fa-chevron-right"></i>
-  </button>
-
-  <!-- Sidebar Content -->
-  <div class="sidebar" id="sidebar">
-    <div class="table-container">
-      <h1 class="title">Café Information</h1>
-      <div class="search-container">
-        <input type="text" id="searchCafeInput" class="form-control" placeholder="Search Café..." />
-        <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="universityDropdown"
-            data-bs-toggle="dropdown" aria-expanded="false">University</button>
-          <ul class="dropdown-menu" aria-labelledby="universityDropdown" id="universityListSidebar">
-            <!-- Opsi universitas akan ditambahkan melalui JavaScript -->
-          </ul>
-        </div>
-      </div>
-      <div class="table-scroll">
-        <table id="cafeTable">
-          <!-- Tabel cafe akan ditambahkan di sini menggunakan JavaScript -->
-          <thead>
-            <tr>
-              <th>Café Name</th>
-              <th>Score</th>
-              <th>Maps</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-  <div class="about-button">
-    <button class="about-link" data-bs-toggle="modal" data-bs-target="#aboutModal">&lt;/&gt; nongsin</button>
-  </div>
-
-  <!-- Modal "Tentang Kami" -->
-  <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="aboutModalLabel">&lt;/&gt; Spatialogy</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>Spatialogy merupakan platform yang dibentuk untuk mewadahi pemikiran-pemikiran yang berkaitan dengan aspek
-            spasial.</p>
-          <p>Spatialogy juga mewadahi keinginan bersama menciptakan ruang untuk mengenal dunia spatial.</p>
-          <div class="text-center">
-            <p>Jangan lupa cek rekomendasi Café dari kami ya!</p>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal"
-              data-bs-target="#cardModal">Rekomendasi Café dari Kami!</button>
-          </div>
-          <div class="social-icons">
-            <p>Mau nongkrong bareng? Jangan ragu buat hubungi kami ya!</p>
-            <a href="https://wa.me/6282133371720" target="_blank" class="social-icon">
-              <img src="dist/images/whatsapp.png" alt="WhatsApp Logo" />
-              <span>Contact Person Spatialogy</span>
-            </a>
-            <a href="https://www.instagram.com/spatialogy/" target="_blank" class="social-icon">
-              <img src="dist/images/instagram.png" alt="Instagram Logo" />
-              <span>@spatialogy</span>
-            </a>
+    <!-- Sidebar Content -->
+    <div class="sidebar" id="sidebar">
+      <div class="table-container">
+        <h1 class="title">Café Information</h1>
+        <div class="search-container">
+          <input type="text" id="searchCafeInput" class="form-control" placeholder="Search Café..." />
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="universityDropdown" data-bs-toggle="dropdown" aria-expanded="false">University</button>
+            <ul class="dropdown-menu" aria-labelledby="universityDropdown" id="universityListSidebar">
+              <!-- Opsi universitas akan ditambahkan melalui JavaScript -->
+            </ul>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal "Rekomendasi Café dari Kami" -->
-  <div class="modal fade" id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="cardModalLabel">Rekomendasi Café dari Kami</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" id="cardModalBody">
-          <!-- Card-content will be added through JavaScript -->
+        <div class="table-scroll">
+          <table id="cafeTable">
+            <!-- Tabel cafe akan ditambahkan di sini menggunakan JavaScript -->
+            <thead>
+              <tr>
+                <th>Café Name</th>
+                <th>Score</th>
+                <th>Maps</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
         </div>
       </div>
     </div>
-  </div>
-</body>
+    <div class="about-button">
+      <button class="about-link" data-bs-toggle="modal" data-bs-target="#aboutModal">&lt;/&gt; nongsin</button>
+    </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<!-- Add Select2 JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet.markercluster@1.5.0/dist/leaflet.markercluster.js"></script>
-<script src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
+    <!-- Modal "Tentang Kami" -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="aboutModalLabel">&lt;/&gt; Spatialogy</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Spatialogy merupakan platform yang dibentuk untuk mewadahi pemikiran-pemikiran yang berkaitan dengan aspek spasial.</p>
+            <p>Spatialogy juga mewadahi keinginan bersama menciptakan ruang untuk mengenal dunia spatial.</p>
+            <div class="text-center">
+              <p>Jangan lupa cek rekomendasi Café dari kami ya!</p>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#cardModal">Rekomendasi Café dari Kami!</button>
+            </div>
+            <div class="social-icons">
+              <p>Mau nongkrong bareng? Jangan ragu buat hubungi kami ya!</p>
+              <a href="https://wa.me/6282133371720" target="_blank" class="social-icon">
+                <img src="dist/images/whatsapp.png" alt="WhatsApp Logo" />
+                <span>Contact Person Spatialogy</span>
+              </a>
+              <a href="https://www.instagram.com/spatialogy/" target="_blank" class="social-icon">
+                <img src="dist/images/instagram.png" alt="Instagram Logo" />
+                <span>@spatialogy</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-<script
-  src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.min.js"
-  integrity="sha512-8BqQ2RH4L4sQhV41ZB24fUc1nGcjmrTA6DILV/aTPYuUzo+wBdYdp0fvQ76Sxgf36p787CXF7TktWlcxu/zyOg=="
-  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Modal "Rekomendasi Café dari Kami" -->
+    <div class="modal fade" id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="cardModalLabel">Rekomendasi Café dari Kami</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="cardModalBody">
+            <!-- Card-content will be added through JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 
-<script src="script/map.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Add Select2 JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.0/dist/leaflet.markercluster.js"></script>
+  <script src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.min.js"
+    integrity="sha512-8BqQ2RH4L4sQhV41ZB24fUc1nGcjmrTA6DILV/aTPYuUzo+wBdYdp0fvQ76Sxgf36p787CXF7TktWlcxu/zyOg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+
+  <script src="script/map.js"></script>
 </html>

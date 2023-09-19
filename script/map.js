@@ -51,7 +51,7 @@ var heatmapLayer, markers;
 // Inisialisasi markers di luar .then()
 var markers = L.markerClusterGroup({
   zIndexOffset: 250,
-  disableClusteringAtZoom: 17
+  disableClusteringAtZoom: 17,
 });
 
 // Inisialisasi heatmapLayer di luar .then()
@@ -60,7 +60,6 @@ var heatmapLayer = L.heatLayer([], {
   blur: 15, // Tingkat blur
   maxZoom: 15, // Aktifkan heatmap saat zoom < 16
 });
-
 
 // Memuat data clean_cafe3.geojson menggunakan AJAX
 fetch('data/clean_cafe3.geojson')
@@ -75,6 +74,7 @@ fetch('data/clean_cafe3.geojson')
       heatmapLayer.addLatLng([coordinates[1], coordinates[0]]);
     });
 
+    var sidebar = document.getElementById('sidebar');
     // Fungsi untuk menambahkan marker layer
     function addMarkerLayer() {
       // Dapatkan tingkat zoom saat ini
@@ -97,6 +97,8 @@ fetch('data/clean_cafe3.geojson')
         markers.addLayers(cafeLayer.getLayers());
         // Menambahkan layer cafeLayer dengan clustering ke peta
         map.addLayer(markers);
+        sidebar.classList.remove('visible');
+        adjustToggleBtnPosition();
       }
     }
 
@@ -137,21 +139,23 @@ fetch('data/clean_cafe3.geojson')
       var starRating = generateStarRating(originalScore, 'orange');
 
       var popupContent = `
-      <div class="custom-popup">
-        <h1 class="popup-title">Nama Cafe:</h1>
-        <h2 class="popup-text">${layer.feature.properties.title}</h2>
-        <hr>
-        <div class="button-container">
-        <a href="${layer.feature.properties.url}" target="_blank" class="popup-button">
-          <img src="dist/images/gmaps.png" alt="Google Maps" class="button-icon">
-          Google Maps
-        </a>
-      </div>
-        <p class="popup-text"><b>Rating:</b> ${starRating}</p>
-        <p class="popup-text"><b>Jumlah Review:</b> ${layer.feature.properties.reviewsCount}</p>
-        <p class="popup-text"><b>Website:</b> ${layer.feature.properties.website !== null ? layer.feature.properties.website : '-'}</p>
-      </div>
-    `;
+        <div class="custom-popup">
+          <h1 class="popup-title">Nama Cafe:</h1>
+          <h2 class="popup-text">${layer.feature.properties.title}</h2>
+          <hr>
+          <div class="button-container">
+            <a href="${layer.feature.properties.url}" target="_blank" class="popup-button">
+              <img src="dist/images/gmaps.png" alt="Google Maps" class="button-icon">
+              Google Maps
+            </a>
+          </div>
+          <p class="popup-text"><b>Rating:</b> ${starRating}</p>
+          <p class="popup-text"><b>Jumlah Review:</b> ${layer.feature.properties.reviewsCount}</p>
+          <p class="popup-text"><b>Website:</b> 
+          ${layer.feature.properties.website !== null ? `<a href="${layer.feature.properties.website}" target="_blank">Visit Website</a>` : '-'}
+          </p>
+        </div>
+      `;
 
       // Menambahkan konten popup ke layer
       layer.bindPopup(popupContent, {
@@ -233,7 +237,6 @@ fetch('data/clean_cafe3.geojson')
         addMarkerLayer(); // Tambahkan layer marker jika zoom mencapai 16 atau lebih
       }
     });
-
   })
   .catch((error) => {
     console.error('Error loading clean_cafe3.geojson:', error);
@@ -263,7 +266,7 @@ fetch('data/kampus_jogja.geojson')
     var universityListSidebar = document.getElementById('universityListSidebar');
 
     data.features.forEach(function (feature) {
-      var universityName = feature.properties.Nama; // Update with the appropriate attribute
+      var universityName = feature.properties.name; // Update with the appropriate attribute
       var listItem = document.createElement('li');
       var link = document.createElement('a');
       link.href = '#';
@@ -283,6 +286,12 @@ fetch('data/kampus_jogja.geojson')
         // Close the sidebar
         sidebar.classList.remove('visible');
         adjustToggleBtnPosition();
+
+        pointLayer.eachLayer(function (layer) {
+          if (layer.feature.properties.name === link.textContent) {
+            layer.openPopup();
+          }
+        });
       });
 
       listItem.appendChild(link);
@@ -297,7 +306,7 @@ fetch('data/kampus_jogja.geojson')
   });
 
 function zoomToUniversity(coordinates) {
-  map.setView([coordinates[1], coordinates[0]], 15); // 18 adalah level zoom yang sesuai, sesuaikan sesuai kebutuhan
+  map.setView([coordinates[1], coordinates[0]], 16); // 18 adalah level zoom yang sesuai, sesuaikan sesuai kebutuhan
 }
 // Fungsi untuk menyaring data berdasarkan nama cafe
 var searchInput = document.getElementById('searchCafeInput');
@@ -395,12 +404,13 @@ function updateTable() {
     row.innerHTML = `
       <td>${cafeInfo.title}</td>
       <td>${score.toFixed(1)} ${starIcon}</td>
-      <td>${cafeInfo.url
-        ? `<a class="text" href="${layer.feature.properties.url}" target="_blank" class="popup-button">
+      <td>${
+        cafeInfo.url
+          ? `<a class="text" href="${layer.feature.properties.url}" target="_blank" class="popup-button">
       <img src="dist/images/gmaps.png" alt="Google Maps" class="button-icon">
       Google Maps
     </a>`
-        : '-'
+          : '-'
       }</td>`;
 
     // Menambahkan event listener untuk efek hover pada baris tabel

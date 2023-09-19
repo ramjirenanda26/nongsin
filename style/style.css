@@ -359,6 +359,17 @@ body,
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.popup-text a {
+  color: #007bff; /* Warna tautan situs web */
+  text-decoration: underline; /* Garis bawah untuk tautan */
+  transition: color 0.3s ease; /* Animasi perubahan warna teks */
+  word-wrap: break-word; /* Pemisahan kata saat teks melebihi lebar pop-up */
+}
+
+.popup-text a:hover {
+  color: #0056b3; /* Warna tautan situs web saat disorot */
+}
+
 @media screen and (max-width: 768px) {
   .sidebar {
     width: 300px; /* Atur lebar sidebar untuk laptop */
