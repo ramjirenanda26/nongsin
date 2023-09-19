@@ -380,6 +380,64 @@ body,
   margin-right: 0.25rem; /* Beri jarak ke kanan antara ikon dan teks */
 }
 
+.popup-text a {
+  color: #007bff; /* Warna tautan situs web */
+  text-decoration: underline; /* Garis bawah untuk tautan */
+  transition: color 0.3s ease; /* Animasi perubahan warna teks */
+  word-wrap: break-word; /* Pemisahan kata saat teks melebihi lebar pop-up */
+}
+
+.popup-text a:hover {
+  color: #0056b3; /* Warna tautan situs web saat disorot */
+}
+
+.card-title a {
+  text-decoration: none !important; /* Hapus garis bawah dari tautan */
+  color: #c1558b; /* Warna teks tautan */
+}
+
+.card-title i {
+  font-size: 1.5rem; /* Ubah ukuran ikon sesuai kebutuhan Anda */
+  margin-right: 0.25rem; /* Beri jarak ke kanan antara ikon dan teks */
+}
+
+#aboutModalLabel {
+  align-text: center;
+}
+
+/* Styling untuk container social-icons */
+.social-icons {
+  text-align: center;
+  margin: 20px;
+}
+
+/* Styling untuk paragraf */
+.social-icons p {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* Styling untuk setiap ikon sosial media */
+.social-icon {
+  display: inline-block;
+  margin: 0 10px;
+  text-decoration: none;
+  color: #333; /* Warna teks dasar */
+}
+
+/* Styling untuk gambar ikon */
+.social-icon img {
+  width: 40px;
+  height: 40px;
+  vertical-align: middle;
+}
+
+/* Styling untuk teks di sebelah ikon */
+.social-icon span {
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+}
 @media screen and (max-width: 768px) {
   .sidebar {
     width: 300px; /* Atur lebar sidebar untuk laptop */

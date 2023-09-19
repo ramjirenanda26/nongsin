@@ -65,7 +65,7 @@ var heatmapLayer = L.heatLayer([], {
 fetch('data/clean_cafe3.geojson')
   .then((response) => response.json())
   .then((data) => {
-    // Menambahkan data clean_cafe3.geojson ke layer cafeLayer
+    // Menambahkan data cafe_v2.geojson ke layer cafeLayer
     cafeLayer.addData(data);
 
     // Tambahkan data ke heatmapLayer
@@ -136,6 +136,7 @@ fetch('data/clean_cafe3.geojson')
       }
 
       // Membuat konten popup dengan kustomisasi, termasuk nilai yang telah dihitung
+      var starRating = generateStarRating(originalScore, 'orange');
       var starRating = generateStarRating(originalScore, 'orange');
 
       var popupContent = `
@@ -363,6 +364,19 @@ function adjustToggleBtnPosition() {
   }
 }
 
+function adjustToggleBtnPosition() {
+  var sidebarWidth = sidebar.offsetWidth;
+  var toggleBtnWidth = toggleSidebarBtn.offsetWidth;
+  var expandedPosition = sidebarWidth + 10; // Adjust as needed
+  var collapsedPosition = 10; // Adjust as needed
+
+  if (sidebar.classList.contains('visible')) {
+    toggleSidebarBtn.style.left = expandedPosition + 'px';
+  } else {
+    toggleSidebarBtn.style.left = collapsedPosition + 'px';
+  }
+}
+
 // Fungsi untuk menyesuaikan posisi tombol
 document.addEventListener('DOMContentLoaded', function () {
   var toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
@@ -399,6 +413,7 @@ function updateTable() {
     var row = document.createElement('tr');
     var starIcon = '<i class="fas fa-star yellow-star"></i>'; // Ikon bintang Font Awesome
 
+    var score = cafeInfo.totalScore; // Menghitung skor yang dibagi dengan 10
     var score = cafeInfo.totalScore; // Menghitung skor yang dibagi dengan 10
 
     row.innerHTML = `
@@ -438,6 +453,13 @@ var cafes = [
   { name: 'Renan', cafe: 'Lavana Coffee', ig: 'ramjirenanda.s', location: 'https://goo.gl/maps/ZDavCvUQ4LnBAQ748' },
   { name: 'Michelle', cafe: 'Svarga Flora Coffee & Plants', ig: 'mchllhans', location: 'https://goo.gl/maps/M7Bed1BAoy38sU849' },
   { name: 'Zani', cafe: 'SiNERGI Co Working Space & Network Space', ig: 'raidanazn', location: 'https://goo.gl/maps/jDonfpVbrrVuMhRq8' },
+  { name: 'Raga', cafe: 'Shelterby.canopeecoffee', ig: 'ragaharits', location: 'https://goo.gl/maps/Me6Vqm8zgVsYqEiW8' },
+  { name: 'Wisnu', cafe: 'Kopi Lumus', ig: 'yowisnu_', location: 'https://goo.gl/maps/zufek1rc4bqVU1gC8' },
+  { name: 'Zaidan', cafe: 'Angkringan Kebun', ig: 'zaidanalghifarif', location: 'https://goo.gl/maps/EhffGJvHzh1QbdWe9' },
+  { name: 'Galuh', cafe: 'ARAH Coffee Pandawa', ig: 'galuhazzahrac', location: 'https://goo.gl/maps/PVKUauBAo5w4eQWV8' },
+  { name: 'Palsum', cafe: 'Sebelas Coffee Sapen', ig: 'naufalkusumap', location: 'https://goo.gl/maps/MYVyhgQLoyYuwHGE6' },
+  { name: 'Yellove', cafe: 'Silol Kopi & Eatery', ig: 'yellove_devitaraja', location: 'https://goo.gl/maps/9eqQtTTbX9D3kXVG7' },
+  { name: 'Tolo', cafe: 'Opposite coffee', ig: 'son.tolo.yo', location: 'https://goo.gl/maps/imhmMZjfhABmU2w19' },
   { name: 'Raga', cafe: 'Shelterby.canopeecoffee', ig: 'ragaharits', location: 'https://goo.gl/maps/Me6Vqm8zgVsYqEiW8' },
   { name: 'Wisnu', cafe: 'Kopi Lumus', ig: 'yowisnu_', location: 'https://goo.gl/maps/zufek1rc4bqVU1gC8' },
   { name: 'Zaidan', cafe: 'Angkringan Kebun', ig: 'zaidanalghifarif', location: 'https://goo.gl/maps/EhffGJvHzh1QbdWe9' },
